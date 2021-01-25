@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD config 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-config.dtd">
+ <configuration>
+ 	<typeAliases>
+ 		<typeAlias type="com.green.biz.member.MemberVO" alias="member"/>
+ 		<typeAlias type="com.green.biz.UserContent.UserContentVO" alias="content"/>
+ 		<typeAlias type="com.green.biz.util.Criteria" alias="criteria"/>
+ 		<typeAlias type="com.green.biz.util.SearchCriteria" alias="search_criteria"/>
+ 		<typeAlias type="com.green.biz.Operator.OperatorVO" alias="operator"/>
+ 		<typeAlias type="com.green.biz.festival_event.eventVO" alias="event"/>
+ 		<typeAlias type="com.green.biz.festival_event.festivalVO" alias="festival"/>
+ 		<typeAlias type="com.green.biz.banner.bannerVO" alias="banner"/>
+ 		<typeAlias type="com.green.biz.like.likeVO" alias="like"/>
+ 		<typeAlias type="com.green.biz.recontent.RecontentVO" alias="recontent"/>
+ 	</typeAliases>
+ 	
+ 	<mappers>
+ 		<mapper resource="mappings/member_mapping.xml"/>
+ 		<mapper resource="mappings/UserContent_mapping.xml"/>
+ 		<mapper resource="mappings/Operator_mapping.xml"/>
+ 		<mapper resource="mappings/event_mapping.xml"/>
+ 		<mapper resource="mappings/festival_mapping.xml"/>
+ 		<mapper resource="mappings/banner_mapping.xml"/>
+ 	</mappers>
+ </configuration>

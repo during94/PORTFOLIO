@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bannerDAO">
+	
+	<select id="banner_list" resultType="banner">
+		SELECT
+			*
+		FROM
+			banner
+		ORDER BY b_num DESC
+	</select>
+	
+	<select id="get_banner" resultType="banner">
+		SELECT
+			*
+		FROM
+			banner
+		WHERE
+			b_num=#{b_num}
+	</select>
+	
+	<insert id="insert_banner">
+		INSERT INTO
+			banner(b_num, b_link, b_sub_title, b_main_title,b_image)
+		VALUES(SEQ_banner_NUM.nextval,#{b_link}, #{b_sub_title}, #{b_main_title},
+				 #{b_image})	
+	</insert>
+	
+	<update id="update_banner">
+		UPDATE
+			banner
+		SET
+			b_link=#{b_link}, b_sub_title=#{b_sub_title}, b_main_title=#{b_main_title},
+			b_image=#{b_image}
+		WHERE
+			b_num = #{b_num}
+	</update>
+	
+	<delete id="delete_banner">
+		DELETE FROM
+			banner
+		WHERE
+			b_num = #{b_num}
+	</delete>
+	
+</mapper>

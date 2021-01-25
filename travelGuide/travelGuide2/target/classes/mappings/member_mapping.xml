@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="memberDAO">
+
+	<select id="find_id" resultType="member">
+		SELECT * FROM member WHERE id=#{id}
+	</select>
+	
+	<select id="getUser" resultType="member">
+		SELECT * FROM member WHERE id=#{id} AND pwd = #{pwd}
+	</select>
+	
+	<insert id="inserUser">
+		INSERT INTO member(id,pwd,name,phone,email) VALUES(#{id},#{pwd},#{name},#{phone},#{email})
+	</insert>
+	
+	<update id="updateInfo">
+		UPDATE 
+			member 
+		SET 
+			pwd=#{pwd},name=#{name},phone=#{phone},email=#{email}
+		WHERE 
+			id=#{id}
+	</update>
+	
+	<select id="find_name_email" resultType="member">
+		SELECT 
+			id
+		FROM
+			member
+		WHERE 
+			name=#{name} AND email=#{email}
+	</select>
+	
+	<select id="find_pwd" resultType="member">
+		SELECT 
+			*
+		FROM
+			member
+		WHERE 
+			name=#{name} AND email=#{email} AND id=#{id}
+	</select>
+	
+	<update id="update_pwd">
+		UPDATE 
+			member 
+		SET 
+			pwd=#{pwd}
+		WHERE 
+			id=#{id}
+	</update>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

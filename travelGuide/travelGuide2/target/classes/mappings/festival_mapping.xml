@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="festivalDAO">
+	
+	<select id="festival_list" resultType="festival">
+		SELECT
+			*
+		FROM
+			festival
+		ORDER BY f_num DESC
+	</select>
+	
+	<select id="get_festival" resultType="festival">
+		SELECT
+			*
+		FROM
+			festival
+		WHERE
+			f_num=#{f_num}
+	</select>
+	
+	<insert id="insert_festival">
+		INSERT INTO
+			festival(f_num, f_link, f_sub_title, f_main_title,f_kind,f_image)
+		VALUES(SEQ_festival_NUM.nextval,#{f_link}, #{f_sub_title}, #{f_main_title},
+				 #{f_kind},#{f_image})	
+	</insert>
+	
+	<update id="update_festival">
+		UPDATE
+			festival
+		SET
+			f_link=#{f_link}, f_sub_title=#{f_sub_title}, f_main_title=#{f_main_title},
+			f_kind=#{f_kind}, f_image=#{f_image}
+		WHERE
+			f_num = #{f_num}
+	</update>
+	
+	<delete id="delete_festival">
+		DELETE FROM
+			festival
+		WHERE
+			f_num = #{f_num}
+	</delete>
+	
+</mapper>

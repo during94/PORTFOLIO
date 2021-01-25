@@ -1,0 +1,31 @@
+@charset "UTF-8";
+
+.area li {
+	list-style: none;
+	float: left;
+	margin-left: 20px;
+	outline: 0 solid white;
+}
+
+
+#table_head{
+	width: 1000px;
+	height: 50px;
+	text-align: center;
+}
+
+#body {
+	text-align: center;
+	width: 1000px;
+	height: 50px;
+}
+
+a {
+	text-decoration: none;
+}
+
+#pageing li {
+	list-style: none;
+	float: left;
+	padding: 6px;
+}

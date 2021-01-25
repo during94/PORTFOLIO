@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="eventDAO">
+	
+	<select id="event_list" resultType="event">
+		SELECT
+			*
+		FROM
+			event
+		ORDER BY e_num DESC
+	</select>
+	
+	<select id="get_event" resultType="event">
+		SELECT
+			*
+		FROM
+			event
+		WHERE
+			e_num=#{e_num}
+	</select>
+	
+	<insert id="insert_event">
+		INSERT INTO
+			event(e_num, e_link, e_sub_title, e_main_title,e_kind,e_image)
+		VALUES(SEQ_EVENT_NUM.nextval,#{e_link}, #{e_sub_title}, #{e_main_title},
+				 #{e_kind},#{e_image})	
+	</insert>
+	
+	<update id="update_event">
+		UPDATE
+			event
+		SET
+			e_link=#{e_link}, e_sub_title=#{e_sub_title}, e_main_title=#{e_main_title},
+			e_kind=#{e_kind}, e_image=#{e_image}
+		WHERE
+			e_num = #{e_num}
+	</update>
+	
+	<delete id="delete_event">
+		DELETE FROM
+			event
+		WHERE
+			e_num = #{e_num}
+	</delete>
+	
+</mapper>

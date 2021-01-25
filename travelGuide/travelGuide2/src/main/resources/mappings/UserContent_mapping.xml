@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userContentDAO">
+
+	
+	<select id="AreaList" resultType="content">
+		SELECT
+			*
+		FROM
+			content
+		ORDER BY num DESC
+	</select>
+	
+	<select id="getUserContentList" resultType="content">
+		SELECT
+			*
+		FROM
+			content
+		ORDER BY num DESC
+	</select>
+	
+	<select resultType="content" id="topList">
+
+		<![CDATA[
+			SELECT ROWNUM,
+				num.*
+			FROM(
+				SELECT c.* FROM content c
+			ORDER BY c.c_count DESC) num
+			WHERE ROWNUM <= 5
+		]]>
+	</select>
+	
+	
+	<insert id="insertContent">
+		INSERT INTO
+			content(num,c_title,c_kind, c_content,id,name,c_file)
+		VALUES
+			(content_seq.nextval, #{c_title}, #{c_kind}, #{c_content},#{id},#{name},#{c_file, jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="detailContent" resultType="content">
+		SELECT
+			*
+		FROM
+			content
+		WHERE
+			num = #{num}
+	</select>
+	
+	<update id="detail_update">
+		UPDATE 
+			content	
+		SET
+			c_title=#{c_title}, c_content = #{c_content}, c_file= #{c_file, jdbcType=VARCHAR}
+		WHERE
+			num = #{num}		
+	</update>
+		
+	<delete id="delete_content">
+		DELETE FROM
+			content
+		WHERE
+			num=#{num}
+	</delete>
+	
+	<update id="c_count_up">
+		UPDATE 
+			content
+		SET
+			c_count = c_count +1
+		WHERE
+			num=#{num}
+	</update>
+	
+	<select id="count_content" resultType="int">
+		SELECT 
+			COUNT(*)
+		FROM
+			content
+	</select>
+	
+	<select id="listPage" resultType="content" parameterType="search_criteria">
+		select
+			num,c_title, name, id, c_content, c_count, c_regdate, c_kind
+		FROM(
+	    		select num,c_title, name, id, c_content, c_count, c_regdate, c_kind,
+	    		row_number() OVER(ORDER BY num DESC)
+	    	AS RNUM
+		    	FROM 
+		    		content
+		    	WHERE 1=1 
+		    	<include refid="search"></include>
+			) MP
+		WHERE RNUM BETWEEN #{rowStart} AND #{rowEnd}
+			ORDER BY num DESC
+	</select>
+	
+	<select id="listCount" resultType="int" parameterType="search_criteria">
+		SELECT COUNT(num)
+		 FROM content
+		WHERE 1=1
+		<include refid="search"></include>
+		AND num > 0
+	</select>
+	
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 'title'">AND c_title LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'content'">AND c_content LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'writer'">AND name LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 't_c'">AND (c_title LIKE '%' || #{keyword} || '%') or (c_content LIKE '%' || #{keyword} || '%') </if>
+		</if>
+	</sql>
+	
+	<select id="Areapaging" parameterType="hashMap" resultType="content">
+		<![CDATA[
+		select
+			num,c_title, name, id, c_content, c_count, c_regdate , c_kind
+		FROM(
+	    		select num,c_title, name, id, c_content, c_count, c_regdate, c_kind,
+	    		row_number() OVER(ORDER BY num DESC)
+	    	AS RNUM
+		    	FROM 
+		    		content
+		    	WHERE 1=1
+		    	<include refid="search"></include>
+			) MP
+		WHERE RNUM BETWEEN #{rowStart} AND #{rowEnd}
+			ORDER BY num DESC
+		]]>
+	</select>	
+	
+	<select id="find_kind" resultType="content">
+		SELECT 
+			*
+		FROM
+			content
+		WHERE c_kind = #{c_kind}
+	</select>
+	
+	<!-- 여기부터 like  -->
+	<insert id="insert_like">
+		INSERT INTO
+			like_up(id, num)
+		VALUES(#{id}, #{num})
+	</insert>
+	
+	<select id="find_like" resultType="like">
+		select * from like_up where num=#{num} AND id=#{id}
+	</select>
+	
+	<select id="find_c_like" resultType="int">
+		select count(like_up) from like_up where num=#{num} AND like_up = 1
+	</select>
+	
+	<update id="like_up" parameterType="HashMap">
+		UPDATE 
+			like_up
+		SET
+			like_up = 1,
+			like_check = 1
+		WHERE num=#{num} AND id=#{id}
+	</update>
+	
+	<update id="like_down" parameterType="HashMap">
+		UPDATE 
+			like_up
+		SET
+			like_up =  0,
+			like_check = 0
+		WHERE num=#{num} AND id=#{id}
+	</update>
+	
+	<!-- 여기부터 댓글 -->
+	<select id="find_all_recontent" resultType="recontent">
+		select * from recontent where re_num = #{re_num} ORDER BY re_number desc
+	</select>
+	
+	
+	<insert id="insert_recontent">
+		insert into 
+			recontent(re_number,re_num,re_id,re_content) 
+		values(SEQ_re_number.nextval,#{re_num},#{re_id},#{re_content})
+	</insert>
+	
+	<select id="find_re_number" resultType="recontent">
+		select * from recontent where re_number = #{re_number}
+	</select>
+	
+	<update id="update_recontent">
+		update 
+			recontent
+		set
+			re_content = #{re_content}
+		where
+			re_number = #{re_number}
+	</update>
+	
+	<delete id="delete_recontent">
+		DELETE FROM
+			recontent
+		WHERE
+			re_number = #{re_number}
+	</delete>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
